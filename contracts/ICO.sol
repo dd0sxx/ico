@@ -6,7 +6,6 @@ contract ICO is Ownable {
 
     mapping (address => uint) balances;
     mapping (address => bool) whitelist;
-    uint constant goal = 30000 ether;
     uint totalFunds;
     bool paused;
     phases phase;
@@ -36,14 +35,20 @@ contract ICO is Ownable {
     }
 
     function addToWhitelist (address[] memory privateInvestors) external onlyOwner {
+        require(phase == phases.seed, "whitelist is irrelevant after seed phase");
         uint i;
         for (i = 0; i < privateInvestors.length; i++) {
             whitelist[privateInvestors[i]] = true;
         }
     }
 
+    function claimTomatoTokens () public {
+        require(phase == phases.open, "cannot withdraw until phase open");
+    }
+
     function recieve () external payable {
         require (msg.value > 0.01 ether, "not enough ether");
+        require (paused == false, "ICO is paused");
 
         if (phase == phases.seed) {
             require(totalFunds + msg.value <= 15000 ether, "seed phase goal cannot be surpassed");
@@ -51,15 +56,21 @@ contract ICO is Ownable {
             require(balances[msg.sender] + msg.value <= 1500 ether, "amount would be more than 1500 ether contributed");
             totalFunds += msg.value;
             balances[msg.sender] += msg.value;
-            if (totalFunds == 15000 ether) {
-                phase = phases.general;
-            }
         }
 
-        if (phase == phases.general) {}
-        if (phase == phases.open) {}
-    }
+        if (phase == phases.general) {
+            require(totalFunds + msg.value <= 30000 ether, "30000 ether contributed cannot be surpassed");
+            require(balances[msg.sender] + msg.value <= 1000 ether, "amount would be more than 1000 ether contributed");
+            totalFunds += msg.value;
+            balances[msg.sender] += msg.value;
+        }
 
+        if (phase == phases.open) {
+            require(totalFunds + msg.value <= 30000 ether, "30000 ether contributed cannot be surpassed");
+            totalFunds += msg.value;
+            balances[msg.sender] += msg.value;
+        }
+    }
 
 
 }
