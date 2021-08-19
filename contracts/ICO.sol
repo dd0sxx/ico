@@ -4,6 +4,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract ICO is Ownable {
 
+    mapping (address => bool) whitelist;
     uint constant goal = 30000 ether;
     phases phase;
 
@@ -20,6 +21,13 @@ contract ICO is Ownable {
             phase = phases.open;
         } else {
             revert("ICO is in phase open");
+        }
+    }
+
+    function addToWhitelist (address[] memory privateInvestors) public onlyOwner {
+        uint i;
+        for (i = 0; i < privateInvestors.length; i++) {
+            whitelist[privateInvestors[i]] = true;
         }
     }
 
