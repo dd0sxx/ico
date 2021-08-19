@@ -1,11 +1,14 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./TomatoToken";
 
 contract ICO is Ownable {
 
+    TomatoToken tomatoToken;
     mapping (address => uint) balances;
     mapping (address => bool) whitelist;
+    address tomatoTokenAdress;
     uint totalFunds;
     bool paused;
     phases phase;
@@ -16,8 +19,9 @@ contract ICO is Ownable {
         open
     }
 
-    constructor () {
+    constructor (address tokenContract) {
         phase = phases.seed;
+        tomatoToken = tokenContract;
     }
 
     function changePhase () external onlyOwner {
@@ -44,6 +48,12 @@ contract ICO is Ownable {
 
     function claimTomatoTokens () public {
         require(phase == phases.open, "cannot withdraw until phase open");
+        require(balances[msg.sender] > 0, "no balance on this address");
+
+    }
+
+    function claimTreasury () public onlyOwner{
+        tomatoToken(tomatoTokenAdress).withdrawTreasury();
     }
 
     function recieve () external payable {

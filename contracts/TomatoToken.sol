@@ -17,7 +17,6 @@ contract TomatoToken is ERC20, Ownable {
 
     function transfer (address recipient, uint256 amount) public virtual override returns (bool){
         require (amount > 0, 'amount must be greater than 0');
-        require (recipient != address(0), 'recipient cannot be address(0)');
         if (tax) {
             uint taxAmount  = (amount / 100) * 2;
             uint newAmount = amount - taxAmount;
@@ -39,8 +38,9 @@ contract TomatoToken is ERC20, Ownable {
     }
 
     function withdrawTreasury () public  {
-        require (msg.sender == owner() || msg.sender == treasury, "address is not owner or treasury");
-        (bool status, ) = treasury.call{value: treasuryBalance}("");
+        require (msg.sender == treasury, "address is not treasury");
+        //replace this with erc20 transfer (not eth call)
+        // (bool status, ) = treasury.call{value: treasuryBalance}("");
         require(status == true, "transfer failed");
 
     }
