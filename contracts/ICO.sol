@@ -6,11 +6,11 @@ import "./TomatoToken.sol";
 contract ICO is Ownable {
 
     TomatoToken tomatoToken;
-    mapping (address => uint) balances;
-    mapping (address => bool) whitelist;
-    uint totalFunds;
-    bool paused;
-    phases phase;
+    mapping (address => uint) public balances;
+    mapping (address => bool) private whitelist;
+    uint public totalFunds;
+    bool public paused;
+    phases public phase;
 
     enum phases {
         seed,
@@ -50,7 +50,7 @@ contract ICO is Ownable {
         require(balances[msg.sender] > 0, "no balance on this address");
     //TODO
     }
-    
+
     function recieve () external payable {
         require (msg.value > 0.01 ether, "not enough ether");
         require (paused == false, "ICO is paused");

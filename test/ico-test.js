@@ -1,6 +1,6 @@
 const { expect } = require("chai")
 
-describe("TomatoToken", function () {
+describe("ICO", function () {
   let ico, treasury, tomatoToken, alice, bob, charlotte
 
   beforeEach ( async () => {
@@ -29,20 +29,10 @@ describe("TomatoToken", function () {
     expect(tomatoToken).to.not.equal(undefined)
   })
 
-  it('gives 10% of total coins to treasury', async () => {
-    expect(await tomatoToken.balanceOf(treasury.address)).to.equal(50000)
+  it('starts in seed phase by default', async () => {
+    expect(await ico.phase()).to.equal(0)
   })
 
-  it('tax is enabled by default', async () => {
-    expect(await tomatoToken.tax()).to.equal(true)
-  })
 
-  it('transfer does not allow an amount of 0', async () => {
-    expect(tomatoToken.transfer(bob, 0)).to.be.revertedWith('amount must be greater than 0')
-  })
-
-  // TODO test transfer function
-
-  //
     
 })
