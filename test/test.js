@@ -39,5 +39,9 @@ describe("TomatoToken", function () {
     expect(await tomatoToken.tax()).to.equal(true)
   })
 
+  it('transfer does not allow an amount of 0', async () => {
+    expect(tomatoToken.transfer(bob, 0)).to.be.revertedWith('amount must be greater than 0')
+  })
+
     
 })
