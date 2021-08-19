@@ -11,7 +11,7 @@ contract TomatoToken is ERC20, Ownable {
 
     constructor(address payable treasuryAddress) ERC20("Tomato", "TMT") {
         setTreasury(treasuryAddress);
-        _mint(treasury, 50000); //max supply
+        _mint(treasury, 50000); // 10% of max supply
         tax = true;
     }
 
@@ -33,12 +33,12 @@ contract TomatoToken is ERC20, Ownable {
         treasury = treasuryAddress;
     }
 
-    function setTax (bool state) public onlyOwner {
+    function toggleTax (bool state) public onlyOwner {
         tax = state;
     }
 
     function withdrawTreasury () public  {
-        require (msg.sender == treasury, "address is not treasury");
+        require (msg.sender == treasury, "msg.sender is not treasury");
         bool status = transfer(treasury, treasuryTaxBalance);
         require(status == true, "transfer failed");
     }

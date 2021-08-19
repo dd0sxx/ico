@@ -11,7 +11,7 @@ contract Treasury is Ownable {
         tomatoToken = TomatoToken(tokenContract);
     }
 
-    function claimTreasury () public onlyOwner {
+    function claimTreasuryTax () public onlyOwner {
         tomatoToken.withdrawTreasury();
     }
 
