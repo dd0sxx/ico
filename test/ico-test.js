@@ -33,6 +33,17 @@ describe("ICO", function () {
     expect(await ico.phase()).to.equal(0)
   })
 
+  it('should allow the owner to manually change the phase', async () => {
+    expect(await ico.phase()).to.equal(0)
+    await ico.changePhase()
+    expect(await ico.phase()).to.equal(1)
+    await ico.changePhase()
+    expect(await ico.phase()).to.equal(2)
+    expect(ico.changePhase()).to.be.revertedWith("ICO is in phase open")
+  })
+
+
+
 
     
 })
