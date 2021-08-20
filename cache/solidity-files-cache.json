@@ -36,8 +36,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/ICO.sol": {
-      "lastModificationDate": 1629430754695,
-      "contentHash": "2b1e9e19354a89a6a7fcd149194d7db6",
+      "lastModificationDate": 1629470381501,
+      "contentHash": "4783904bcf6cfc1b04eb394f9c7f93c7",
       "sourceName": "contracts/ICO.sol",
       "solcConfig": {
         "version": "0.8.4",

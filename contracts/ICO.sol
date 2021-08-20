@@ -51,7 +51,7 @@ contract ICO is Ownable {
     //TODO
     }
 
-    function recieve () external payable {
+    receive () external payable {
         require (msg.value > 0.01 ether, "not enough ether");
         require (paused == false, "ICO is paused");
 

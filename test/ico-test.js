@@ -67,5 +67,13 @@ describe("ICO", function () {
       await ico.changePhase()
       expect(ico.claimTomatoTokens()).to.be.revertedWith("cannot withdraw until phase open")
   })
+
+  it('should allow users to contribute funds if they are whitelisted', async () => {
+    await ico.addToWhitelist([alice.address, bob.address])
+    await alice.sendTransaction({from: alice.address, to: ico.address, value: ethers.utils.parseEther(`5`)})
+    await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`10`)})
+    expect(await ico.balances(alice.address)).to.deep.equal(ethers.utils.parseEther(`5`))
+    expect(await ico.balances(bob.address)).to.deep.equal(ethers.utils.parseEther(`10`))
+  })
     
 })
