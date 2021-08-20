@@ -60,7 +60,12 @@ describe("ICO", function () {
   it('should not allow whitelisted address after the seed phase is over', async () => {
     await ico.changePhase()
     expect(ico.addToWhitelist([alice.address, bob.address])).to.be.revertedWith("whitelist is irrelevant after seed phase")
+  })
 
+  it('should not allow users to withdraw funds in the seed or general phase', async () => {
+      expect(ico.claimTomatoTokens()).to.be.revertedWith("cannot withdraw until phase open")
+      await ico.changePhase()
+      expect(ico.claimTomatoTokens()).to.be.revertedWith("cannot withdraw until phase open")
   })
     
 })
