@@ -50,8 +50,17 @@ describe("ICO", function () {
     expect(await ico.paused()).to.equal(false)
   })
 
+  it('should allow owner to add an array of addresses to whitelist', async () => {
+    await ico.addToWhitelist([alice.address, bob.address])
+    expect(await ico.whitelist(alice.address)).to.deep.equal(true)
+    expect(await ico.whitelist(bob.address)).to.deep.equal(true)
+    expect(await ico.whitelist(charlotte.address)).to.deep.equal(false)
+  })
 
+  it('should not allow whitelisted address after the seed phase is over', async () => {
+    await ico.changePhase()
+    expect(ico.addToWhitelist([alice.address, bob.address])).to.be.revertedWith("whitelist is irrelevant after seed phase")
 
-
+  })
     
 })

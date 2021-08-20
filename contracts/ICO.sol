@@ -7,7 +7,7 @@ contract ICO is Ownable {
 
     TomatoToken tomatoToken;
     mapping (address => uint) public balances;
-    mapping (address => bool) private whitelist;
+    mapping (address => bool) public whitelist;
     uint public totalFunds;
     bool public paused;
     phases public phase;
