@@ -45,7 +45,7 @@ contract ICO is Ownable {
         }
     }
 
-    function claimTomatoTokens () public {
+    function redeem () public {
         require(phase == phases.open, "cannot withdraw until phase open");
         require(balances[msg.sender] > 0, "no balance on this address");
     //TODO

@@ -74,6 +74,15 @@ describe("ICO", function () {
     await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`10`)})
     expect(await ico.balances(alice.address)).to.deep.equal(ethers.utils.parseEther(`5`))
     expect(await ico.balances(bob.address)).to.deep.equal(ethers.utils.parseEther(`10`))
+    expect(charlotte.sendTransaction({from: charlotte.address, to: ico.address, value: ethers.utils.parseEther(`10`)})).to.be.revertedWith("address not whitelisted for seed sale")
+  })
+
+  it('should allow anyone to contribute during general phase', async () => {
+      await ico.changePhase()
+      await alice.sendTransaction({from: alice.address, to: ico.address, value: ethers.utils.parseEther(`5`)})
+      await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`10`)})
+      await charlotte.sendTransaction({from: charlotte.address, to: ico.address, value: ethers.utils.parseEther(`10`)})
+      
   })
     
 })

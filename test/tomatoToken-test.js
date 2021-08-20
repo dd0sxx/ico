@@ -29,7 +29,7 @@ describe("TomatoToken", function () {
     expect(tomatoToken).to.not.equal(undefined)
   })
 
-  it('gives 10% of total coins to treasury', async () => {
+  it('mints 500000 tomato coins to treasury', async () => {
     expect(await tomatoToken.balanceOf(treasury.address)).to.equal(50000)
   })
 
