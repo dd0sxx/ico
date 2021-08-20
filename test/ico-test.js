@@ -42,6 +42,14 @@ describe("ICO", function () {
     expect(ico.changePhase()).to.be.revertedWith("ICO is in phase open")
   })
 
+  it('should allow owner to pause and unpause the contract', async () => {
+    expect(await ico.paused()).to.equal(false)
+    await ico.togglePause(true)
+    expect(await ico.paused()).to.equal(true)
+    await ico.togglePause(false)
+    expect(await ico.paused()).to.equal(false)
+  })
+
 
 
 
