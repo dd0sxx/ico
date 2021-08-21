@@ -8,12 +8,19 @@ contract TomatoToken is ERC20, Ownable {
     address payable public treasury;
     address payable public ico;
     uint public treasuryTaxBalance;
+    uint constant MAX_SUPPLY = 500000000000000000000000;
+    uint8 constant RATE = 5;
     bool public tax;
 
     constructor(address payable treasuryAddress) ERC20("Tomato", "TMT") {
         setTreasury(treasuryAddress);
-        _mint(treasury, 500000); // max supply
+        mint(treasury, 500000 * 10**decimals()); // max supply
         tax = true;
+    }
+
+    function mint(address to, uint amount) public onlyOwner {
+        require(totalSupply() + amount <= MAX_SUPPLY, 'minting would surpass max supply');
+        _mint(to, amount);
     }
 
     function transfer (address recipient, uint256 amount) public virtual override returns (bool){

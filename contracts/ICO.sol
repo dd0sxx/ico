@@ -50,7 +50,7 @@ contract ICO is Ownable {
         uint bal = balances[msg.sender];
         require( bal > 0, "no balance on this address");
 
-        treasury.icoDistribute(msg.sender, (bal / 1000000000000000000) * 5); // convert wei to ether and multiply it by 5
+        treasury.icoDistribute(msg.sender, bal * 5);
     }
 
     receive () external payable {
