@@ -22,9 +22,9 @@ contract TomatoToken is ERC20, Ownable {
             uint taxAmount  = (amount / 100) * 2;
             uint newAmount = amount - taxAmount;
             treasuryTaxBalance += taxAmount;
-            _transfer(_msgSender(), recipient, newAmount);
+            _transfer(msg.sender, recipient, newAmount);
         } else {
-            _transfer(_msgSender(), recipient, amount);
+            _transfer(msg.sender, recipient, amount);
         }
         return true;
     }

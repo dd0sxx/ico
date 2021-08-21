@@ -109,8 +109,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/TomatoToken.sol": {
-      "lastModificationDate": 1629491440347,
-      "contentHash": "a4f13461a499626b689d820383a39dcc",
+      "lastModificationDate": 1629562103197,
+      "contentHash": "9a80c8db713fe111e04b14a912f624ad",
       "sourceName": "contracts/TomatoToken.sol",
       "solcConfig": {
         "version": "0.8.4",
