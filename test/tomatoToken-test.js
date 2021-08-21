@@ -30,7 +30,7 @@ describe("TomatoToken", function () {
   })
 
   it('mints 500000 tomato coins to treasury', async () => {
-    expect(await tomatoToken.balanceOf(treasury.address)).to.equal(50000)
+    expect(await tomatoToken.balanceOf(treasury.address)).to.equal("500000")
   })
 
   it('tax is enabled by default', async () => {

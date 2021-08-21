@@ -18,8 +18,11 @@ describe("ICO", function () {
     await tomatoToken.deployed()
 
     const ICO = await ethers.getContractFactory("ICO")
-    ico = await ICO.deploy(tomatoToken.address)
+    ico = await ICO.deploy(treasury.address)
     await ico.deployed()
+
+    treasury.setTokenContract(tomatoToken.address)
+    treasury.setICOContract(ico.address)
     
   })
   
@@ -63,9 +66,9 @@ describe("ICO", function () {
   })
 
   it('should not allow users to withdraw funds in the seed or general phase', async () => {
-      expect(ico.claimTomatoTokens()).to.be.revertedWith("cannot withdraw until phase open")
+      expect(ico.redeem()).to.be.revertedWith("cannot withdraw until phase open")
       await ico.changePhase()
-      expect(ico.claimTomatoTokens()).to.be.revertedWith("cannot withdraw until phase open")
+      expect(ico.redeem()).to.be.revertedWith("cannot withdraw until phase open")
   })
 
   it('should allow users to contribute funds if they are whitelisted', async () => {
@@ -83,6 +86,28 @@ describe("ICO", function () {
       await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`10`)})
       await charlotte.sendTransaction({from: charlotte.address, to: ico.address, value: ethers.utils.parseEther(`10`)})
       
+  })
+
+  it('should allow users to redeem tokens', async () => {
+    await ico.changePhase()
+    await alice.sendTransaction({from: alice.address, to: ico.address, value: ethers.utils.parseEther(`5`)})
+    await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`10`)})
+    await ico.changePhase()
+    let initBal1 = await tomatoToken.balanceOf(alice.address);
+    let initBal2 = await tomatoToken.balanceOf(bob.address);
+    let initBal3 = await tomatoToken.balanceOf(charlotte.address);
+    expect(initBal1).to.deep.equal(0)
+    expect(initBal2).to.deep.equal(0)
+    expect(initBal3).to.deep.equal(0)
+    await ico.redeem()
+    await ico.connect(bob).redeem()
+    let bal1 = await tomatoToken.balanceOf(alice.address);
+    let bal2 = await tomatoToken.balanceOf(bob.address);
+    console.log(bal1)
+    console.log(bal2)
+    expect(bal1).to.deep.equal(25)
+    expect(bal2).to.deep.equal(50)
+    expect(ico.connect(charlotte).redeem()).to.be.revertedWith()
   })
     
 })

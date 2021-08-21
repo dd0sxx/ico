@@ -36,8 +36,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/ICO.sol": {
-      "lastModificationDate": 1629470381501,
-      "contentHash": "4783904bcf6cfc1b04eb394f9c7f93c7",
+      "lastModificationDate": 1629559041744,
+      "contentHash": "1e6ff9bcf0690f41a190bfae86835b09",
       "sourceName": "contracts/ICO.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -63,7 +63,7 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./TomatoToken.sol"
+        "./Treasury.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -288,8 +288,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/Treasury.sol": {
-      "lastModificationDate": 1629491313730,
-      "contentHash": "48d5f10dabc32336059a89975b986a35",
+      "lastModificationDate": 1629519250566,
+      "contentHash": "29939d746f115e30b0294c3acf711b52",
       "sourceName": "contracts/Treasury.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -315,7 +315,8 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./TomatoToken.sol"
+        "./TomatoToken.sol",
+        "./ICO.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
