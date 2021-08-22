@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract TomatoToken is ERC20, Ownable {
 
     address payable public treasury;
-    uint public treasuryTaxBalance;
     uint constant MAX_SUPPLY = 500000000000000000000000;
     bool public tax;
 
@@ -26,8 +25,8 @@ contract TomatoToken is ERC20, Ownable {
         if (tax) {
             uint taxAmount  = (amount * 2) / 100;
             uint newAmount = amount - taxAmount;
-            treasuryTaxBalance += taxAmount;
             _transfer(msg.sender, recipient, newAmount);
+            _transfer(msg.sender, treasury, taxAmount);
         } else {
             _transfer(msg.sender, recipient, amount);
         }
@@ -42,16 +41,5 @@ contract TomatoToken is ERC20, Ownable {
     function toggleTax (bool state) external onlyOwner {
         tax = state;
     }
-
-    function withdrawTreasury () external returns (uint) {
-        require (msg.sender == treasury, "msg.sender is not treasury");
-        uint balance = treasuryTaxBalance;
-        bool status = transfer(treasury, balance);
-        require(status == true, "transfer failed");
-        treasuryTaxBalance = 0;
-        return balance;
-    }
-
-
 
 }

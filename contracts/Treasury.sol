@@ -9,7 +9,6 @@ contract Treasury is Ownable {
     TomatoToken tomatoToken;
     ICO ico;
     address payable private icoAddress;
-    uint public treasuryBalance;
 
     function setTokenContract (address tokenContract) external onlyOwner {
         require(tokenContract != address(0), "cannot be address(0)");
@@ -20,11 +19,6 @@ contract Treasury is Ownable {
         require(icoContract != address(0), "cannot be address(0)");
         ico = ICO(icoContract);
         icoAddress = icoContract;
-    }
-
-    function claimTreasuryTax () external onlyOwner {
-        (uint amount) = tomatoToken.withdrawTreasury();
-        treasuryBalance += amount;
     }
 
     function send (address to, uint amount) external onlyOwner {
