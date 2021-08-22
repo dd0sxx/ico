@@ -103,10 +103,9 @@ describe("ICO", function () {
     await ico.connect(bob).redeem()
     let bal1 = await tomatoToken.balanceOf(alice.address);
     let bal2 = await tomatoToken.balanceOf(bob.address);
-    console.log(bal1)
-    console.log(bal2)
-    expect(bal1).to.deep.equal(25)
-    expect(bal2).to.deep.equal(50)
+ 
+    expect(bal1).to.deep.equal(ethers.BigNumber.from(`${((25 * 0.98) * (10 ** 18))}`)) // mulitply number to decimal and take away 2%
+    expect(bal2).to.deep.equal(ethers.BigNumber.from(`${((50 * 0.98) * (10 ** 18))}`))
     expect(ico.connect(charlotte).redeem()).to.be.revertedWith()
   })
     

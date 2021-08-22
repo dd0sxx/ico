@@ -3,6 +3,14 @@ const { expect } = require("chai")
 describe("TomatoToken", function () {
   let ico, treasury, tomatoToken, alice, bob, charlotte
 
+  function decimalMath (num) {
+    return ethers.BigNumber.from(`${((num) * (10 ** 18))}`)
+  }
+
+  function decimalMathTax (num) {
+    return ethers.BigNumber.from(`${((num * 0.98) * (10 ** 18))}`)
+  }
+
   beforeEach ( async () => {
     [a, b, c] = await ethers.getSigners()
     alice = a
@@ -33,7 +41,8 @@ describe("TomatoToken", function () {
   })
 
   it('mints 500000 tomato coins to treasury', async () => {
-    expect(await tomatoToken.balanceOf(treasury.address)).to.equal("500000")
+    // i need assistance working w bignumbers here lol
+    expect(await tomatoToken.balanceOf(treasury.address)).to.equal(decimalMath(500000))
   })
 
   it('tax is enabled by default', async () => {
@@ -51,14 +60,14 @@ describe("TomatoToken", function () {
     await ico.changePhase()
     await ico.redeem()
     await ico.connect(bob).redeem()
-    await tomatoToken.transfer(charlotte.address, 10)
-    await tomatoToken.connect(bob).transfer(charlotte.address, 30)
+    await tomatoToken.transfer(charlotte.address, decimalMath(10))
+    await tomatoToken.connect(bob).transfer(charlotte.address, decimalMath(30))
     let bal1 = await tomatoToken.balanceOf(alice.address)
     let bal2 = await tomatoToken.balanceOf(bob.address)
     let bal3 = await tomatoToken.balanceOf(charlotte.address)
-    expect(bal1).to.deep.equal(15)
-    expect(bal2).to.deep.equal(20)
-    expect(bal3).to.deep.equal(40)
+    expect(bal1).to.deep.equal(decimalMathTax('15'))
+    expect(bal2).to.deep.equal(decimalMathTax('20'))
+    expect(bal3).to.deep.equal(decimalMathTax('40'))
   })
 
   it('should allow users to transfer a decimal amount of tokens', async () => {
@@ -68,14 +77,14 @@ describe("TomatoToken", function () {
     await ico.changePhase()
     await ico.redeem()
     await ico.connect(bob).redeem()
-    await tomatoToken.transfer(charlotte.address, 1.5)
-    await tomatoToken.connect(bob).transfer(charlotte.address, 4.25)
+    await tomatoToken.transfer(charlotte.address, decimalMath(1.5))
+    await tomatoToken.connect(bob).transfer(charlotte.address, decimalMath(4.25))
     let bal1 = await tomatoToken.balanceOf(alice.address)
     let bal2 = await tomatoToken.balanceOf(bob.address)
     let bal3 = await tomatoToken.balanceOf(charlotte.address)
-    expect(bal1).to.deep.equal(23.5)
-    expect(bal2).to.deep.equal(45.75)
-    expect(bal3).to.deep.equal(5.75)
+    expect(bal1).to.deep.equal(decimalMathTax('23.5'))
+    expect(bal2).to.deep.equal(decimalMathTax('45.75'))
+    expect(bal3).to.deep.equal(decimalMathTax('5.75'))
   })
     
 })

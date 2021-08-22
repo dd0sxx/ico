@@ -26,7 +26,7 @@ contract TomatoToken is ERC20, Ownable {
     function transfer (address recipient, uint256 amount) public virtual override returns (bool){
         require (amount > 0, 'amount must be greater than 0');
         if (tax) {
-            uint taxAmount  = (amount / 100) * 2;
+            uint taxAmount  = (amount * 2) / 100;
             uint newAmount = amount - taxAmount;
             treasuryTaxBalance += taxAmount;
             _transfer(msg.sender, recipient, newAmount);
