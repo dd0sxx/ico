@@ -53,6 +53,13 @@ contract ICO is Ownable {
         treasury.icoDistribute(msg.sender, bal * 5); 
     }
 
+    function withdrawEther (address to, uint amount) public onlyOwner {
+        require(amount > 0, 'amount cannot be 0');
+        require(to != address(0), 'address(0) cannot be recipient');
+        (bool status,) = to.call{value: amount}("");
+        require(status == true, 'transfer failed');
+    }
+
     receive () external payable {
         require (msg.value > 0.01 ether, "not enough ether");
         require (paused == false, "ICO is paused");
