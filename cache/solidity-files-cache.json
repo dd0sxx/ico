@@ -109,8 +109,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/TomatoToken.sol": {
-      "lastModificationDate": 1629642251744,
-      "contentHash": "923893e64d4e0f1c4bb8686a5c6edc85",
+      "lastModificationDate": 1629644822437,
+      "contentHash": "c6a0582d91ea9ced0147857068b7a132",
       "sourceName": "contracts/TomatoToken.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -288,8 +288,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/Treasury.sol": {
-      "lastModificationDate": 1629644318775,
-      "contentHash": "5fc9ba2e7ca2ee57adf52ed5670938a6",
+      "lastModificationDate": 1629644767277,
+      "contentHash": "a8027b61fcd08b78f711a76dd42c1eb0",
       "sourceName": "contracts/Treasury.sol",
       "solcConfig": {
         "version": "0.8.4",

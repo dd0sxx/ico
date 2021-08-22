@@ -49,7 +49,7 @@ contract TomatoToken is ERC20, Ownable {
         bool status = transfer(treasury, balance);
         require(status == true, "transfer failed");
         treasuryTaxBalance = 0;
-        return balance
+        return balance;
     }
 
 

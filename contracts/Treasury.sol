@@ -23,7 +23,7 @@ contract Treasury is Ownable {
     }
 
     function claimTreasuryTax () external onlyOwner {
-        uint amount = tomatoToken.withdrawTreasury();
+        (uint amount) = tomatoToken.withdrawTreasury();
         treasuryBalance += amount;
     }
 
