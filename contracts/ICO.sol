@@ -33,7 +33,7 @@ contract ICO is Ownable {
         }
     }
 
-    function togglePause (bool state) public onlyOwner {
+    function togglePause (bool state) external onlyOwner {
         paused = state;
     }
 
@@ -45,7 +45,7 @@ contract ICO is Ownable {
         }
     }
 
-    function redeem () public {
+    function redeem () external {
         require(phase == phases.open, "cannot withdraw until phase open");
         uint bal = balances[msg.sender];
         require( bal > 0, "no balance on this address");
@@ -54,7 +54,7 @@ contract ICO is Ownable {
     }
 
     // @notice: to withdraw the ether raised from the ico 
-    function sendEther (address to, uint amount) public onlyOwner {
+    function sendEther (address to, uint amount) external onlyOwner {
         require(amount > 0, 'amount cannot be 0');
         require(to != address(0), 'address(0) cannot be recipient');
         require(phase == phases.open, "cannot withdraw until phase open");

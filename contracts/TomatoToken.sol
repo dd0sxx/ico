@@ -39,11 +39,11 @@ contract TomatoToken is ERC20, Ownable {
         treasury = treasuryAddress;
     }
 
-    function toggleTax (bool state) public onlyOwner {
+    function toggleTax (bool state) external onlyOwner {
         tax = state;
     }
 
-    function withdrawTreasury () public returns (uint) {
+    function withdrawTreasury () external returns (uint) {
         require (msg.sender == treasury, "msg.sender is not treasury");
         uint balance = treasuryTaxBalance;
         bool status = transfer(treasury, balance);
