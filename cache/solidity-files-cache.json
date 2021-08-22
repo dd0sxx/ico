@@ -36,8 +36,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/ICO.sol": {
-      "lastModificationDate": 1629593700172,
-      "contentHash": "f3fdda2334acde28720c85ee1c101fa4",
+      "lastModificationDate": 1629644165530,
+      "contentHash": "2dcbd33734565edb64f714beaac67ce8",
       "sourceName": "contracts/ICO.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -288,8 +288,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/Treasury.sol": {
-      "lastModificationDate": 1629519250566,
-      "contentHash": "29939d746f115e30b0294c3acf711b52",
+      "lastModificationDate": 1629644318775,
+      "contentHash": "5fc9ba2e7ca2ee57adf52ed5670938a6",
       "sourceName": "contracts/Treasury.sol",
       "solcConfig": {
         "version": "0.8.4",

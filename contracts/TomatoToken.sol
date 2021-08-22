@@ -6,10 +6,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract TomatoToken is ERC20, Ownable {
 
     address payable public treasury;
-    address payable public ico;
     uint public treasuryTaxBalance;
     uint constant MAX_SUPPLY = 500000000000000000000000;
-    uint8 constant RATE = 5;
     bool public tax;
 
     constructor(address payable treasuryAddress) ERC20("Tomato", "TMT") {
@@ -45,10 +43,13 @@ contract TomatoToken is ERC20, Ownable {
         tax = state;
     }
 
-    function withdrawTreasury () public  {
+    function withdrawTreasury () public returns (uint) {
         require (msg.sender == treasury, "msg.sender is not treasury");
-        bool status = transfer(treasury, treasuryTaxBalance);
+        uint balance = treasuryTaxBalance;
+        bool status = transfer(treasury, balance);
         require(status == true, "transfer failed");
+        treasuryTaxBalance = 0;
+        return balance
     }
 
 

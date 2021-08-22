@@ -11,20 +11,23 @@ contract Treasury is Ownable {
     address payable private icoAddress;
     uint public treasuryBalance;
 
-    function setTokenContract (address tokenContract) public onlyOwner {
+    function setTokenContract (address tokenContract) external onlyOwner {
+        require(tokenContract != address(0), "cannot be address(0)");
         tomatoToken = TomatoToken(tokenContract);
     }
 
-    function setICOContract (address payable icoContract) public onlyOwner {
+    function setICOContract (address payable icoContract) external onlyOwner {
+        require(icoContract != address(0), "cannot be address(0)");
         ico = ICO(icoContract);
         icoAddress = icoContract;
     }
 
-    function claimTreasuryTax () public onlyOwner {
-        tomatoToken.withdrawTreasury();
+    function claimTreasuryTax () external onlyOwner {
+        uint amount = tomatoToken.withdrawTreasury();
+        treasuryBalance += amount;
     }
 
-    function send (address to, uint amount) public onlyOwner {
+    function send (address to, uint amount) external onlyOwner {
         bool status = _send(to, amount);
         require(status == true, "transfer failed");
     }
@@ -34,13 +37,19 @@ contract Treasury is Ownable {
         return status;
     }
 
-    function icoDistribute (address to, uint amount) public {
+    function icoDistribute (address to, uint amount) external {
         require (msg.sender == icoAddress, "msg.sender is not the ico contract");
         bool status = _send(to, amount);
         require(status == true, "transfer failed");
     }
 
-
+    // @notice: this function serves as a backup incase ether is sent to this contract  
+    function sendEther (address to, uint amount) external onlyOwner {
+        require(amount > 0, 'amount cannot be 0');
+        require(to != address(0), 'address(0) cannot be recipient');
+        (bool status,) = to.call{value: amount}("");
+        require(status == true, 'transfer failed');
+    }
 
     receive () external payable {
 
