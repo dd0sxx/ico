@@ -109,8 +109,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/TomatoToken.sol": {
-      "lastModificationDate": 1629671948930,
-      "contentHash": "12e46ead70da3291c3224d151d301d00",
+      "lastModificationDate": 1629992048350,
+      "contentHash": "0737ac6d86ef7c1986b5cfa97fa97bd8",
       "sourceName": "contracts/TomatoToken.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -323,6 +323,80 @@
       ],
       "artifacts": [
         "Treasury"
+      ]
+    },
+    "/Users/costar/Documents/ico/contracts/TomatoLP.sol": {
+      "lastModificationDate": 1630003366236,
+      "contentHash": "d511008ba54067c910e1013e49f5aef8",
+      "sourceName": "contracts/TomatoLP.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./LPToken.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TomatoLP"
+      ]
+    },
+    "/Users/costar/Documents/ico/contracts/LPToken.sol": {
+      "lastModificationDate": 1630003038813,
+      "contentHash": "d6c9ded998b8055d55fabaf45509aa15",
+      "sourceName": "contracts/LPToken.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "LPToken"
       ]
     }
   }

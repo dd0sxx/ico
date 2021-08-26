@@ -7,13 +7,15 @@ import './LPToken.sol';
 contract TomatoLP is Ownable {
     /// @dev devide token amount by FEE
     LPToken lpToken;
-    address payable LPTokenAdress;
     address constant WETH = 0xECF8F87f810EcF450940c9f60066b4a7a501d6A7;
     uint constant FEE = 100;
     uint public balanceTMTO;
     uint public balanceETH;
     bool initialized;
 
+    function setLPTokenAddress (address payable LPTokenAdress) public onlyOwner {
+        lpToken = LPToken(LPTokenAdress);
+    }
 
     /// @notice uniswap's sqrt function (not original)
     function sqrt(uint y) internal pure returns (uint z) {
@@ -29,10 +31,12 @@ contract TomatoLP is Ownable {
         }
     }
 
+    /// @notice returns supply of LP tokwns 
     function getTotalSupply() internal returns (uint) {
         return lpToken.totalSupply();
     }
 
+    /// @dev handles token calc for init and normal deposits
     function calcLPTokens (uint amount0, uint amount1) public returns (uint) {
         uint liquidity;
         if (initialized == false) {
@@ -45,12 +49,12 @@ contract TomatoLP is Ownable {
         return liquidity;
     }
 
-    }
 
 
     /// @notice will mint LP tokens and deposit liquidity
-   function provideLiquidity (uint amount0, uint amount2) public {
-
+   function provideLiquidity (uint amount0, uint amount1) public {
+       uint liquidity = calcLPTokens(amount0, amount1);
+       lpToken.mint(msg.sender, liquidity);
    }
 
     /// @notice will burn LP tokens and return liquidity
