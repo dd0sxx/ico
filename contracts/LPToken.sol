@@ -16,4 +16,10 @@ contract LPToken is ERC20 {
         _mint(to, liquidity);
     }    
 
+    function burn(address sender, uint amount) public {
+        require(msg.sender == tomatoLP, 'sender must be tomatoLP contract');
+        require(balanceOf(sender) >= amount, 'sender does not have enough LP tokens');
+        _burn(sender, amount);
+    }
+
 }
