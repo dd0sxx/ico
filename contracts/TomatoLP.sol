@@ -38,12 +38,12 @@ contract TomatoLP is Ownable {
     }
 
     /// @notice returns supply of LP tokwns 
-    function getTotalSupply() internal returns (uint) {
+    function getTotalSupply() internal view returns (uint) {
         return lpToken.totalSupply();
     }
 
     /// @dev handles token calc for init and normal deposits
-    function calcLPTokens (uint amount0, uint amount1) public returns (uint) {
+    function calcLPTokens (uint amount0, uint amount1) public view returns (uint) {
         uint liquidity;
         if (initialized == false) {
             liquidity = sqrt(amount0 * amount1); //- MINIMUM_LIQUIDITY
@@ -59,10 +59,14 @@ contract TomatoLP is Ownable {
 
     /// @notice will mint LP tokens and deposit liquidity
    function provideLiquidity (uint amount0, uint amount1) public {
-       uint liquidity = calcLPTokens(amount0, amount1);
-       balanceTMTO += amount0;
-       balanceWETH += amount1;
-       lpToken.mint(msg.sender, liquidity);
+        require(IERC20(TMTO).balanceOf(msg.sender) >= amount0, 'not enough TMTO');
+        require(IERC20(WETH).balanceOf(msg.sender) >= amount1, 'not enough WETH');
+        IERC20(TMTO).transfer(address(this), amount0);
+        IERC20(WETH).transfer(address(this), amount1);
+        uint liquidity = calcLPTokens(amount0, amount1);
+        balanceTMTO += amount0;
+        balanceWETH += amount1;
+        lpToken.mint(msg.sender, liquidity);
 
    }
 

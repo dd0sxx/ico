@@ -326,8 +326,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/TomatoLP.sol": {
-      "lastModificationDate": 1630003366236,
-      "contentHash": "d511008ba54067c910e1013e49f5aef8",
+      "lastModificationDate": 1630008236621,
+      "contentHash": "b7ce05ea361653b8b8a1d8767cd34041",
       "sourceName": "contracts/TomatoLP.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -353,6 +353,7 @@
       },
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
         "./LPToken.sol"
       ],
       "versionPragmas": [
@@ -363,8 +364,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/LPToken.sol": {
-      "lastModificationDate": 1630003038813,
-      "contentHash": "d6c9ded998b8055d55fabaf45509aa15",
+      "lastModificationDate": 1630009010598,
+      "contentHash": "7f71d5e696fb458dcf5e280121283981",
       "sourceName": "contracts/LPToken.sol",
       "solcConfig": {
         "version": "0.8.4",
