@@ -10,7 +10,7 @@ contract TomatoLP is Ownable {
     address constant WETH = 0xECF8F87f810EcF450940c9f60066b4a7a501d6A7;
     uint constant FEE = 100;
     uint public balanceTMTO;
-    uint public balanceETH;
+    uint public balanceWETH;
     bool initialized;
 
     function setLPTokenAddress (address payable LPTokenAdress) public onlyOwner {
@@ -43,7 +43,7 @@ contract TomatoLP is Ownable {
             liquidity = sqrt(amount0 * amount1); //- MINIMUM_LIQUIDITY
         } else {
             uint x = amount0 * getTotalSupply() / balanceTMTO;
-            uint y = amount1 * getTotalSupply() / balanceETH;
+            uint y = amount1 * getTotalSupply() / balanceWETH;
             x > y ? liquidity = y : liquidity = x;
         }
         return liquidity;
@@ -59,6 +59,8 @@ contract TomatoLP is Ownable {
 
     /// @notice will burn LP tokens and return liquidity
    function withdrawLiquidity (uint amount) public {
+        uint amount0 = (amount  / getTotalSupply()) * balanceTMTO;
+        uint amount1 = (amount  / getTotalSupply()) * balanceWETH;
 
    }
 
