@@ -10,7 +10,7 @@ contract TomatoToken is ERC20, Ownable {
     uint constant MAX_SUPPLY = 500000000000000000000000;
     bool public tax;
 
-    constructor(address payable treasuryAddress) ERC20("Tomato", "TMT") {
+    constructor(address payable treasuryAddress) ERC20("Tomato", "TMTO") {
         setTreasury(treasuryAddress);
         mint(treasury, 350000 * 10**decimals());
         mint(tomatoLP, 150000 * 10**decimals());
