@@ -6,12 +6,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract TomatoToken is ERC20, Ownable {
 
     address payable public treasury;
+    address payable public tomatoLP;
     uint constant MAX_SUPPLY = 500000000000000000000000;
     bool public tax;
 
     constructor(address payable treasuryAddress) ERC20("Tomato", "TMT") {
         setTreasury(treasuryAddress);
-        mint(treasury, 500000 * 10**decimals()); // max supply
+        mint(treasury, 350000 * 10**decimals());
+        mint(tomatoLP, 150000 * 10**decimals());
         tax = true;
     }
 
