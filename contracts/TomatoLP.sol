@@ -42,6 +42,11 @@ contract TomatoLP is Ownable {
         return lpToken.totalSupply();
     }
 
+    /// @notice syncs the total balances of TMTO & WETH on this contract
+    function sync() internal {
+
+    }
+
     /// @dev handles token calc for init and normal deposits
     function calcLPTokens (uint amount0, uint amount1) public view returns (uint) {
         uint liquidity;
@@ -61,29 +66,49 @@ contract TomatoLP is Ownable {
    function provideLiquidity (uint amount0, uint amount1) public {
         require(IERC20(TMTO).balanceOf(msg.sender) >= amount0, 'not enough TMTO');
         require(IERC20(WETH).balanceOf(msg.sender) >= amount1, 'not enough WETH');
-        IERC20(TMTO).transfer(address(this), amount0);
-        IERC20(WETH).transfer(address(this), amount1);
+        IERC20(TMTO).transferFrom(msg.sender, address(this), amount0);
+        IERC20(WETH).transferFrom(msg.sender, address(this), amount1);
         uint liquidity = calcLPTokens(amount0, amount1);
-        balanceTMTO += amount0;
-        balanceWETH += amount1;
+        balanceTMTO = IERC20(TMTO).balanceOf(address(this));
+        balanceWETH = IERC20(WETH).balanceOf(address(this));
         lpToken.mint(msg.sender, liquidity);
-
    }
 
     /// @notice will burn LP tokens and return liquidity
    function withdrawLiquidity (uint amount) public {
         uint amount0 = (amount  / getTotalSupply()) * balanceTMTO;
         uint amount1 = (amount  / getTotalSupply()) * balanceWETH;
-        balanceTMTO -= amount0;
-        balanceWETH -= amount1;
         lpToken.burn(msg.sender, amount);
         IERC20(TMTO).transfer(msg.sender, amount0);
         IERC20(WETH).transfer(msg.sender, amount1);
+        balanceTMTO = IERC20(TMTO).balanceOf(address(this));
+        balanceWETH = IERC20(WETH).balanceOf(address(this));
    }
 
    /// @notice swap TMTO for ETH
-   function swap () public {
-       // 1% fee
+   function swap (uint amount0, uint amount1, address to) public {
+       require(amount0 > 0 || amount1 > 0, 'insufficient output amount');
+       require(amount0 < balanceTMTO && amount1 < balanceWETH, 'insufficient liquidity');
+
+
+
+        require(to != WETH && to != TMTO, 'invalid to address');
+        if (amount0 > 0) IERC20(TMTO).transferFrom(msg.sender, address(this), amount0); 
+        if (amount1 > 0) IERC20(WETH).transferFrom(msg.sender, address(this), amount1); 
+        // if (data.length > 0) IUniswapV2Callee(to).uniswapV2Call(msg.sender, amount0Out, amount1Out, data);
+        sync();
+        
+        uint amount0In = balanceTMTO > _reserve0 - amount0Out ? balanceTMTO - (_reserve0 - amount0Out) : 0;
+        uint amount1In = balanceWETH > _reserve1 - amount1Out ? balanceWETH - (_reserve1 - amount1Out) : 0;
+        require(amount0In > 0 || amount1In > 0, 'UniswapV2: INSUFFICIENT_INPUT_AMOUNT');
+        { // scope for reserve{0,1}Adjusted, avoids stack too deep errors
+        uint balance0Adjusted = (balanceTMTO * 1000) - (amount0In * 3);
+        uint balance1Adjusted = (balanceWETH * 1000) - (amount1In * 3);
+        require(balance0Adjusted * balance1Adjusted >= uint(_reserve0).mul(_reserve1).mul(1000**2), 'UniswapV2: K');
+        }
+
+        _update(balance0, balance1, _reserve0, _reserve1);
+        emit Swap(msg.sender, amount0In, amount1In, amount0Out, amount1Out, to);
    }
 
 }
