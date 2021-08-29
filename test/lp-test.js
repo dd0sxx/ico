@@ -1,6 +1,6 @@
 const { expect } = require("chai")
 
-describe("ICO", function () {
+describe("LP", function () {
   let ico, treasury, tomatoToken, alice, bob, charlotte
 
   beforeEach ( async () => {
@@ -14,7 +14,7 @@ describe("ICO", function () {
     await treasury.deployed()
 
     const TomatoLP = await ethers.getContractFactory("TomatoLP")
-    tomatoLP = await TomatoLP.deploy(tomatoToken.address)
+    tomatoLP = await TomatoLP.deploy()
     await tomatoLP.deployed()
 
     const TomatoToken = await ethers.getContractFactory("TomatoToken")
@@ -34,6 +34,11 @@ describe("ICO", function () {
     lpToken = await LPToken.deploy(tomatoLP.address)
     await lpToken.deployed()
     
+  })
+
+  it('Mint an initial 150,000 TMTO supply (30k ETH times the ICO exchange rate) for your liquidity contract.', async () => {
+    let bal = await tomatoToken.balanceOf(tomatoLP.address)
+    expect(bal.toString()).to.deep.equal('150000000000000000000000')
   })
 
 })

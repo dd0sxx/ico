@@ -22,7 +22,7 @@ describe("TomatoToken", function () {
     await treasury.deployed()
 
     const TomatoLP = await ethers.getContractFactory("TomatoLP")
-    tomatoToken = await TomatoLP.deploy()
+    tomatoLP = await TomatoLP.deploy()
     await tomatoLP.deployed()
 
     const TomatoToken = await ethers.getContractFactory("TomatoToken")
@@ -44,10 +44,11 @@ describe("TomatoToken", function () {
     expect(tomatoToken).to.not.equal(undefined)
   })
 
-  // it('mints 500000 tomato coins to treasury', async () => {
-  //   // i need assistance working w bignumbers here lol
-  //   expect(await tomatoToken.balanceOf(treasury.address)).to.equal(decimalMath(500000))
-  // })
+  it('mints 350000 tomato coins to treasury', async () => {
+    let bal = await tomatoToken.balanceOf(treasury.address);
+
+    expect(bal.toString()).to.equal('350000000000000000000000')
+  })
 
   it('tax is enabled by default', async () => {
     expect(await tomatoToken.tax()).to.equal(true)
