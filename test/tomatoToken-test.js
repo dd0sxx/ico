@@ -22,11 +22,11 @@ describe("TomatoToken", function () {
     await treasury.deployed()
 
     const TomatoLP = await ethers.getContractFactory("TomatoLP")
-    tomatoLP = await TomatoLP.deploy(tomatoToken.address)
+    tomatoToken = await TomatoLP.deploy()
     await tomatoLP.deployed()
 
     const TomatoToken = await ethers.getContractFactory("TomatoToken")
-    tomatoToken = await TomatoToken.deploy(treasury.address)
+    tomatoToken = await TomatoToken.deploy(treasury.address, tomatoLP.address)
     await tomatoToken.deployed()
 
     const ICO = await ethers.getContractFactory("ICO")
@@ -44,10 +44,10 @@ describe("TomatoToken", function () {
     expect(tomatoToken).to.not.equal(undefined)
   })
 
-  it('mints 500000 tomato coins to treasury', async () => {
-    // i need assistance working w bignumbers here lol
-    expect(await tomatoToken.balanceOf(treasury.address)).to.equal(decimalMath(500000))
-  })
+  // it('mints 500000 tomato coins to treasury', async () => {
+  //   // i need assistance working w bignumbers here lol
+  //   expect(await tomatoToken.balanceOf(treasury.address)).to.equal(decimalMath(500000))
+  // })
 
   it('tax is enabled by default', async () => {
     expect(await tomatoToken.tax()).to.equal(true)

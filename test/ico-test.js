@@ -18,7 +18,7 @@ describe("ICO", function () {
     await tomatoLP.deployed()
 
     const TomatoToken = await ethers.getContractFactory("TomatoToken")
-    tomatoToken = await TomatoToken.deploy(treasury.address)
+    tomatoToken = await TomatoToken.deploy(treasury.address, tomatoLP.address)
     await tomatoToken.deployed()
 
     const ICO = await ethers.getContractFactory("ICO")
