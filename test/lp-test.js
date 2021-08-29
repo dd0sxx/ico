@@ -13,9 +13,15 @@ describe("ICO", function () {
     treasury = await Treasury.deploy()
     await treasury.deployed()
 
+    const TomatoLP = await ethers.getContractFactory("TomatoLP")
+    tomatoLP = await TomatoLP.deploy(tomatoToken.address)
+    await tomatoLP.deployed()
+
     const TomatoToken = await ethers.getContractFactory("TomatoToken")
     tomatoToken = await TomatoToken.deploy(treasury.address)
     await tomatoToken.deployed()
+
+    tomatoLP.setTMTOAddress(tomatoToken.address)
 
     const ICO = await ethers.getContractFactory("ICO")
     ico = await ICO.deploy(treasury.address)
@@ -23,6 +29,10 @@ describe("ICO", function () {
 
     treasury.setTokenContract(tomatoToken.address)
     treasury.setICOContract(ico.address)
+
+    const LPToken = await ethers.getContractFactory("LPToken")
+    lpToken = await LPToken.deploy(tomatoLP.address)
+    await lpToken.deployed()
     
   })
 

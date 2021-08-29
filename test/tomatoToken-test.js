@@ -21,6 +21,10 @@ describe("TomatoToken", function () {
     treasury = await Treasury.deploy()
     await treasury.deployed()
 
+    const TomatoLP = await ethers.getContractFactory("TomatoLP")
+    tomatoLP = await TomatoLP.deploy(tomatoToken.address)
+    await tomatoLP.deployed()
+
     const TomatoToken = await ethers.getContractFactory("TomatoToken")
     tomatoToken = await TomatoToken.deploy(treasury.address)
     await tomatoToken.deployed()

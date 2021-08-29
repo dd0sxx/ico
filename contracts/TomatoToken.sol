@@ -10,8 +10,9 @@ contract TomatoToken is ERC20, Ownable {
     uint constant MAX_SUPPLY = 500000000000000000000000;
     bool public tax;
 
-    constructor(address payable treasuryAddress) ERC20("Tomato", "TMTO") {
+    constructor(address payable treasuryAddress, address payable tomatoLPAddress) ERC20("Tomato", "TMTO") {
         setTreasury(treasuryAddress);
+        setTomatoLP(tomatoLPAddress);
         mint(treasury, 350000 * 10**decimals());
         mint(tomatoLP, 150000 * 10**decimals());
         tax = true;
@@ -38,6 +39,11 @@ contract TomatoToken is ERC20, Ownable {
     function setTreasury (address payable treasuryAddress) public onlyOwner {
         require (treasuryAddress != address(0), 'treasury cannot be address(0)');
         treasury = treasuryAddress;
+    }
+
+        function setTomatoLP (address payable lpAddress) public onlyOwner {
+        require (lpAddress != address(0), 'treasury cannot be address(0)');
+        tomatoLP = lpAddress;
     }
 
     function toggleTax (bool state) external onlyOwner {

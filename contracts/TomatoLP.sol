@@ -15,7 +15,7 @@ contract TomatoLP is Ownable {
     uint public balanceWETH;
     bool initialized;
 
-    constructor (address TMTOAddress) {
+    function setTMTOAddress (address TMTOAddress) public onlyOwner {
         TMTO = TMTOAddress;
     }
 
