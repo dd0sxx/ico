@@ -58,8 +58,6 @@ contract TomatoLP is Ownable {
         }
     }
 
-    // TODO: add an approve function
-
     /// @notice returns supply of LP tokwns 
     function getTotalSupply() public view returns (uint) {
         return lpToken.totalSupply();
@@ -85,14 +83,14 @@ contract TomatoLP is Ownable {
         return liquidity;
     }
 
-    function calcSwap (uint deposit, address to) view public returns (uint) {
+    function calcSwap (uint deposit, uint k, address to) view public returns (uint) {
         uint output;
         deposit -= (deposit / FEE);
 
         if (to == WETH) {
-            output = deposit / 5;
+            output = balanceTMTO * k;
         } else if (to == TMTO) {
-            output = deposit * 5;
+            output = balanceWETH * k;
         } else {
             revert('to address needs to be WETH or TMTO');
         }
@@ -110,6 +108,7 @@ contract TomatoLP is Ownable {
    function provideLiquidity (uint amount0, uint amount1) public lock {
         require(IERC20(TMTO).balanceOf(msg.sender) >= amount0, 'not enough TMTO');
         require(IERC20(WETH).balanceOf(msg.sender) >= amount1, 'not enough WETH');
+        // make sure they deposit an even ratio
 
         IERC20(TMTO).transferFrom(msg.sender, address(this), amount0);
         IERC20(WETH).transferFrom(msg.sender, address(this), amount1);
@@ -145,7 +144,7 @@ contract TomatoLP is Ownable {
         require(amount0 > 0 || amount1 > 0, 'insufficient amount');
 
         sync();
-
+        uint k = balanceTMTO * balanceWETH;
         require(amount0 < balanceTMTO && amount1 < balanceWETH, 'insufficient liquidity');
         require(to != WETH && to != TMTO, 'invalid to address');
 
@@ -161,12 +160,10 @@ contract TomatoLP is Ownable {
         }
 
         sync();
-
-        uint output = calcSwap(deposit, to);
+        uint output = calcSwap(deposit, k, to);
 
         IERC20(to).transfer(msg.sender, output);
         
-        sync();
    }
 
     receive () external payable {}

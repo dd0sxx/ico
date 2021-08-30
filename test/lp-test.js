@@ -48,6 +48,9 @@ describe("LP", function () {
       await charlotte.sendTransaction({from: charlotte.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
       await ico.sendEther(tomatoLP.address, ethers.utils.parseEther(`3000`));
       await tomatoLP.wrapEther(ethers.utils.parseEther(`3000`));
+      await ico.connect(alice).redeem()
+      await ico.connect(bob).redeem()
+      await ico.connect(charlotte).redeem()
   }
 
   it('Mint an initial 150,000 TMTO supply (30k ETH times the ICO exchange rate) for your liquidity contract', async () => {
@@ -61,14 +64,37 @@ describe("LP", function () {
     expect(lpBal.toString()).to.deep.equal(ethers.utils.parseEther(`3000`))
   })
 
-  it('should mint LP tokens for liquidity deposits', async () => {
+  it('should mint first LP tokens for lpcontract', async () => {
     await ICOSellOutAndTransfer()
     let amount0 = await tomatoToken.balanceOf(tomatoLP.address)
     let amount1 = await WETH.balanceOf(tomatoLP.address)
-    console.log(amount0.toString(), amount1.toString())
     await tomatoLP.initialize(amount0.toString(), amount1.toString())
     let lpBal = await lpToken.balanceOf(tomatoLP.address)
-    expect(lpBal.toString()).to.deep.equal('21213203435596425732025')
+    expect(lpBal.toString()).to.deep.equal('21213203435596425732025') //init balance
+  })
+
+  it('should mint LP tokens for liquidity providers', async () => {
+    await ICOSellOutAndTransfer()
+    let amount0 = await tomatoToken.balanceOf(tomatoLP.address)
+    let amount1 = await WETH.balanceOf(tomatoLP.address)
+    await tomatoLP.initialize(amount0.toString(), amount1.toString())
+    let lpBal = await lpToken.balanceOf(tomatoLP.address)
+    expect(lpBal.toString()).to.deep.equal('21213203435596425732025') //end of init 
+
+    await bob.sendTransaction({from: bob.address, to: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', value: ethers.utils.parseEther(`100`)})
+    await charlotte.sendTransaction({from: charlotte.address, to: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', value: ethers.utils.parseEther(`300`)})
+
+    await tomatoToken.connect(bob).approveSpending()
+    await tomatoToken.connect(charlotte).approveSpending()
+
+    await tomatoLP.connect(bob).provideLiquidity(ethers.utils.parseEther(`500`), ethers.utils.parseEther(`100`))
+    await tomatoLP.connect(charlotte).provideLiquidity(ethers.utils.parseEther(`500`), ethers.utils.parseEther(`100`))
+
+    let bobLPBal = await lpToken.balanceOf(bob.address)
+    let charLPBal = await lpToken.balanceOf(charlotte.address)
+    expect(bobLPBal.toString()).to.deep.equal('') 
+    expect(charLPBal.toString()).to.deep.equal('') 
+
   })
 
 
