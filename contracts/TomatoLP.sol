@@ -8,19 +8,24 @@ import './LPToken.sol';
 contract TomatoLP is Ownable {
     /// @dev devide token amount by FEE
     LPToken lpToken;
-    address constant WETH = 0xECF8F87f810EcF450940c9f60066b4a7a501d6A7;
+    address payable constant WETH = payable(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2); //WETH address on mainnet
     address TMTO;
     uint constant FEE = 100;
     uint public balanceTMTO;
     uint public balanceWETH;
     bool initialized;
 
-    function setTMTOAddress (address TMTOAddress) public onlyOwner {
+    function setTMTOAddress (address TMTOAddress) external onlyOwner {
         TMTO = TMTOAddress;
     }
 
-    function setLPTokenAddress (address payable LPTokenAdress) public onlyOwner {
+    function setLPTokenAddress (address payable LPTokenAdress) external onlyOwner {
         lpToken = LPToken(LPTokenAdress);
+    }
+
+    function wrapEther (uint amount) external onlyOwner {
+        (bool success,) = WETH.call{value: amount}("");
+        require(success == true, 'weth conversion failed');
     }
 
     /// @notice uniswap's sqrt function (not original)
@@ -40,7 +45,7 @@ contract TomatoLP is Ownable {
     // TODO: add an approve function
 
     /// @notice returns supply of LP tokwns 
-    function getTotalSupply() internal view returns (uint) {
+    function getTotalSupply() public view returns (uint) {
         return lpToken.totalSupply();
     }
 
