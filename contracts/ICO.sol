@@ -62,15 +62,6 @@ contract ICO is Ownable {
         require(status == true, 'transfer failed');
     }
 
-    // @notice: to fill lp with weth from ico funds 
-    function sendLP (uint amount) external onlyOwner {
-        require(amount > 0, 'amount cannot be 0');
-        require(to != address(0), 'address(0) cannot be recipient');
-        require(phase == phases.open, "cannot withdraw until phase open");
-        (bool status,) = to.call{value: amount}("");
-        require(status == true, 'transfer failed');
-    }
-
     receive () external payable {
         require (msg.value > 0.01 ether, "not enough ether");
         require (paused == false, "ICO is paused");

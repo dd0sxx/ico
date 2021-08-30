@@ -35,23 +35,19 @@ describe("LP", function () {
     lpToken = await LPToken.deploy(tomatoLP.address)
     await lpToken.deployed()
     
-    const WETH = await new ethers.Contract('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', WETH_ABI, alice)
+    // const WETH = await new ethers.Contract('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', WETH_ABI, alice)
   })
 
   async function ICOSellOut () {
-        await ico.changePhase()
-        await ico.changePhase()
-        await alice.sendTransaction({from: alice.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
-        await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
-        await charlotte.sendTransaction({from: charlotte.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
-        await ico.redeem()
-        await ico.connect(bob).redeem()
-        let bal1 = await tomatoToken.balanceOf(alice.address);
-        let bal2 = await tomatoToken.balanceOf(bob.address);
-     
-        expect(bal1).to.deep.equal(ethers.BigNumber.from(`${((25 * 0.98) * (10 ** 18))}`)) // mulitply number to decimal and take away 2%
-        expect(bal2).to.deep.equal(ethers.BigNumber.from(`${((50 * 0.98) * (10 ** 18))}`))
-        expect(ico.connect(charlotte).redeem()).to.be.revertedWith()
+      await ico.changePhase()
+      await ico.changePhase()
+      await alice.sendTransaction({from: alice.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
+      await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
+      await charlotte.sendTransaction({from: charlotte.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
+      await ico.sendEther(tomatoLP.address, ethers.utils.parseEther(`1000`));
+      console.log('sent ether from ico to lp')
+      await tomatoLP.wrapEther;
+      console.log('w')
   }
 
   it('Mint an initial 150,000 TMTO supply (30k ETH times the ICO exchange rate) for your liquidity contract', async () => {
@@ -59,8 +55,8 @@ describe("LP", function () {
     expect(bal.toString()).to.deep.equal('150000000000000000000000')
   })
 
-  it('should have withdraw function to your ICO contract that moves the invested funds to your liquidity contract', async () => {
-    
+  it('should have withdraw function to your ICO contract that moves the invested funds to your liquidity contract and wraps the ether to WETH', async () => {
+    await ICOSellOut();
   })
 
 })

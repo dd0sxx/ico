@@ -26,6 +26,7 @@ contract TomatoLP is Ownable {
     function wrapEther (uint amount) external onlyOwner {
         (bool success,) = WETH.call{value: amount}("");
         require(success == true, 'weth conversion failed');
+        sync();
     }
 
     /// @notice uniswap's sqrt function (not original)
