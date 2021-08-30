@@ -59,4 +59,16 @@ describe("LP", function () {
     expect(lpBal.toString()).to.deep.equal(ethers.utils.parseEther(`3000`))
   })
 
+  it('should mint LP tokens for liquidity deposits', async () => {
+    await ICOSellOutAndTransfer()
+    let amount0 = await tomatoToken.balanceOf(tomatoLP.address)
+    let amount1 = await WETH.balanceOf(tomatoLP.address)
+    await tomatoLP.initialize(amount0, amount1)
+    expect(await lpToken.balanceOf(tomatoLP.address)).to.deep.equal()
+  })
+
+
+    // Burns LP tokens to return liquidity to holder
+    // Accepts trades with a 1% fee
+
 })

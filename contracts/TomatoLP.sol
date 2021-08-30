@@ -14,6 +14,16 @@ contract TomatoLP is Ownable {
     uint public balanceTMTO;
     uint public balanceWETH;
     bool initialized;
+    bool locked;
+
+    modifier lock () {
+        require(locked == false);
+        _;
+    }
+
+    function lockContract (bool state) external onlyOwner {
+        locked = state;
+    }
 
     function setTMTOAddress (address TMTOAddress) external onlyOwner {
         TMTO = TMTOAddress;
@@ -84,8 +94,15 @@ contract TomatoLP is Ownable {
         return output;
     }
 
+   function initialize (uint amount0, uint amount1) public onlyOwner {
+       sync();
+       uint liquidity = calcLPTokens(amount0, amount1);
+       initialized = true;
+       lpToken.mint(address(this), liquidity);
+   }
+
     /// @notice will mint LP tokens and deposit liquidity
-   function provideLiquidity (uint amount0, uint amount1) public {
+   function provideLiquidity (uint amount0, uint amount1) public lock {
         require(IERC20(TMTO).balanceOf(msg.sender) >= amount0, 'not enough TMTO');
         require(IERC20(WETH).balanceOf(msg.sender) >= amount1, 'not enough WETH');
 
@@ -100,7 +117,7 @@ contract TomatoLP is Ownable {
    }
 
     /// @notice will burn LP tokens and return liquidity
-   function withdrawLiquidity (uint amount) public {
+   function withdrawLiquidity (uint amount) public lock {
         sync();
 
         uint amount0 = (amount  / getTotalSupply()) * balanceTMTO;
@@ -119,7 +136,7 @@ contract TomatoLP is Ownable {
    /// @param amount0 = amount of TMTO coins
    /// @param amount1= amount of WETH
    /// @param to = address of coin which the trader wants to swap to
-   function swap (uint amount0, uint amount1, address to) public {
+   function swap (uint amount0, uint amount1, address to) public lock {
         require(amount0 > 0 || amount1 > 0, 'insufficient amount');
 
         sync();
