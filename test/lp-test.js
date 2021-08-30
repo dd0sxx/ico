@@ -2,7 +2,7 @@ const { expect } = require("chai")
 const {WETH_ABI} = require("../config")
 
 describe("LP", function () {
-  let ico, treasury, tomatoToken, alice, bob, charlotte
+  let ico, treasury, tomatoToken, WETH, tomatoLP, lpToken, alice, bob, charlotte
 
   beforeEach ( async () => {
     [a, b, c] = await ethers.getSigners()
@@ -35,19 +35,17 @@ describe("LP", function () {
     lpToken = await LPToken.deploy(tomatoLP.address)
     await lpToken.deployed()
     
-    // const WETH = await new ethers.Contract('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', WETH_ABI, alice)
+    WETH = await new ethers.Contract('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', WETH_ABI, alice)
   })
 
-  async function ICOSellOut () {
+  async function ICOSellOutAndTransfer () {
       await ico.changePhase()
       await ico.changePhase()
       await alice.sendTransaction({from: alice.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
       await bob.sendTransaction({from: bob.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
       await charlotte.sendTransaction({from: charlotte.address, to: ico.address, value: ethers.utils.parseEther(`1000`)})
-      await ico.sendEther(tomatoLP.address, ethers.utils.parseEther(`1000`));
-      console.log('sent ether from ico to lp')
-      await tomatoLP.wrapEther;
-      console.log('w')
+      await ico.sendEther(tomatoLP.address, ethers.utils.parseEther(`3000`));
+      await tomatoLP.wrapEther(ethers.utils.parseEther(`3000`));
   }
 
   it('Mint an initial 150,000 TMTO supply (30k ETH times the ICO exchange rate) for your liquidity contract', async () => {
@@ -56,7 +54,9 @@ describe("LP", function () {
   })
 
   it('should have withdraw function to your ICO contract that moves the invested funds to your liquidity contract and wraps the ether to WETH', async () => {
-    await ICOSellOut();
+    await ICOSellOutAndTransfer()
+    lpBal = await WETH.balanceOf(tomatoLP.address)
+    expect(lpBal.toString()).to.deep.equal(ethers.utils.parseEther(`3000`))
   })
 
 })
