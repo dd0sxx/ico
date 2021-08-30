@@ -147,7 +147,9 @@ contract TomatoLP is Ownable {
         sync();
    }
 
-        
+    receive () external payable {}
+
+    }
 
 
         
