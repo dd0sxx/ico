@@ -10,11 +10,16 @@ contract TomatoLP is Ownable {
     LPToken lpToken;
     address payable constant WETH = payable(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2); //WETH address on mainnet
     address TMTO;
+    address treasury;
     uint constant FEE = 100;
     uint public balanceTMTO;
     uint public balanceWETH;
     bool initialized;
     bool locked;
+
+    constructor(address treasuryAddress) {
+        treasury = treasuryAddress;
+    }
 
     modifier lock () {
         require(locked == false);

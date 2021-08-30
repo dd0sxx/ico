@@ -15,7 +15,7 @@ describe("LP", function () {
     await treasury.deployed()
 
     const TomatoLP = await ethers.getContractFactory("TomatoLP")
-    tomatoLP = await TomatoLP.deploy()
+    tomatoLP = await TomatoLP.deploy(treasury.address)
     await tomatoLP.deployed()
 
     const TomatoToken = await ethers.getContractFactory("TomatoToken")
@@ -34,6 +34,8 @@ describe("LP", function () {
     const LPToken = await ethers.getContractFactory("LPToken")
     lpToken = await LPToken.deploy(tomatoLP.address)
     await lpToken.deployed()
+
+    tomatoLP.setLPTokenAddress(lpToken.address)
     
     WETH = await new ethers.Contract('0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', WETH_ABI, alice)
   })
@@ -63,8 +65,9 @@ describe("LP", function () {
     await ICOSellOutAndTransfer()
     let amount0 = await tomatoToken.balanceOf(tomatoLP.address)
     let amount1 = await WETH.balanceOf(tomatoLP.address)
-    await tomatoLP.initialize(amount0, amount1)
-    expect(await lpToken.balanceOf(tomatoLP.address)).to.deep.equal()
+    await tomatoLP.initialize(amount0.toString(), amount1.toString())
+    let lpBal = await lpToken.balanceOf(tomatoLP.address)
+    expect(lpBal.toString()).to.deep.equal()
   })
 
 
