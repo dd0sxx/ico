@@ -65,9 +65,10 @@ describe("LP", function () {
     await ICOSellOutAndTransfer()
     let amount0 = await tomatoToken.balanceOf(tomatoLP.address)
     let amount1 = await WETH.balanceOf(tomatoLP.address)
+    console.log(amount0.toString(), amount1.toString())
     await tomatoLP.initialize(amount0.toString(), amount1.toString())
     let lpBal = await lpToken.balanceOf(tomatoLP.address)
-    expect(lpBal.toString()).to.deep.equal()
+    expect(lpBal.toString()).to.deep.equal('21213203435596425732025')
   })
 
 
