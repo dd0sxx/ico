@@ -116,6 +116,6 @@ describe("LP", function () {
 
 
     // Burns LP tokens to return liquidity to holder
-    // Accepts trades with a 1% fee
+
 
 })
