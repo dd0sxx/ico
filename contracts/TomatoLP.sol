@@ -99,6 +99,9 @@ contract TomatoLP is Ownable {
         } else {
             revert('to address needs to be WETH or TMTO');
         }
+        if (((deposit * 10) / 100) > output) {
+            revert('more than 10% slippage on swap');
+        }
         return output;
     }
 
