@@ -11,10 +11,6 @@ contract LPToken is ERC20 {
         tomatoLP = tomatoLPAddress;
     }
 
-    function approve () public {
-        _approve(tomatoLP, msg.sender, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
-    }
-
     function mint(address to, uint liquidity) public {
         require(msg.sender == tomatoLP, 'sender must be tomatoLP contract');
         _mint(to, liquidity);

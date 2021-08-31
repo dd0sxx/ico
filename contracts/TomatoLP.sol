@@ -44,6 +44,11 @@ contract TomatoLP is Ownable {
         sync();
     }
 
+    // function approve () external {
+    //     IERC20(TMTO).approve(address(this), IERC20(TMTO).balanceOf(msg.sender));
+    //     IERC20(WETH).approve(address(this), IERC20(TMTO).balanceOf(msg.sender));
+    // }
+
     /// @notice uniswap's sqrt function (not original)
     function sqrt(uint y) internal pure returns (uint z) {
         if (y > 3) {

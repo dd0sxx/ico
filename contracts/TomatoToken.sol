@@ -23,10 +23,6 @@ contract TomatoToken is ERC20, Ownable {
         _mint(to, amount);
     }
 
-    function approveSpending () external {
-        _approve(tomatoLP, msg.sender, MAX_SUPPLY);
-    }
-
     function transfer (address recipient, uint256 amount) public virtual override returns (bool){
         require (amount > 0, 'amount must be greater than 0');
         if (tax) {
