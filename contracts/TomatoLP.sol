@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: none
+
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -18,6 +20,7 @@ contract TomatoLP is Ownable {
     bool locked;
 
     constructor(address treasuryAddress) {
+        require(treasuryAddress != address(0));
         treasury = treasuryAddress;
     }
 
@@ -31,10 +34,12 @@ contract TomatoLP is Ownable {
     }
 
     function setTMTOAddress (address TMTOAddress) external onlyOwner {
+        require(TMTOAddress != address(0));
         TMTO = TMTOAddress;
     }
 
     function setLPTokenAddress (address payable LPTokenAdress) external onlyOwner {
+        require(LPTokenAdress != address(0));
         lpToken = LPToken(LPTokenAdress);
     }
 
@@ -118,8 +123,9 @@ contract TomatoLP is Ownable {
         require(IERC20(WETH).balanceOf(msg.sender) >= amount1, 'not enough WETH');
         // make sure they deposit an even ratio
 
-        IERC20(TMTO).transferFrom(msg.sender, address(this), amount0);
-        IERC20(WETH).transferFrom(msg.sender, address(this), amount1);
+        bool status1 = IERC20(TMTO).transferFrom(msg.sender, address(this), amount0);
+        bool status2 = IERC20(WETH).transferFrom(msg.sender, address(this), amount1);
+        require(status1 == true && status2 == true, 'transfer failed');
 
         sync();
 
@@ -136,8 +142,9 @@ contract TomatoLP is Ownable {
         uint amount1 = (balanceWETH * amount) / totalSupply ;
         lpToken.burn(msg.sender, amount);
 
-        IERC20(TMTO).transfer(msg.sender, amount0);
-        IERC20(WETH).transfer(msg.sender, amount1);
+        bool status1 = IERC20(TMTO).transfer(msg.sender, amount0);
+        bool status2 = IERC20(WETH).transfer(msg.sender, amount1);
+        require(status1 == true && status2 == true, 'transfer failed');
 
         sync();
    }
@@ -159,18 +166,20 @@ contract TomatoLP is Ownable {
 
         if (amount0 > 0) {
             deposit = amount0;
-            IERC20(TMTO).transferFrom(msg.sender, address(this), amount0);
+            bool status = IERC20(TMTO).transferFrom(msg.sender, address(this), amount0);
+            require(status== true, 'transfer failed');
         }
         else if (amount1 > 0) {
             deposit = amount1;
-            IERC20(WETH).transferFrom(msg.sender, address(this), amount1);
+            bool status = IERC20(WETH).transferFrom(msg.sender, address(this), amount1);
+            require(status== true, 'transfer failed');
         }
 
         sync();
         uint output = calcSwap(deposit, k, to);
 
-        IERC20(to).transfer(msg.sender, output);
-        
+        bool result = IERC20(to).transfer(msg.sender, output);
+        require(result== true, 'transfer failed');
    }
 
     receive () external payable {}
