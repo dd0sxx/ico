@@ -1,40 +1,6 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/costar/Documents/ico/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1629330840339,
-      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.8.4",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
-      ]
-    },
     "/Users/costar/Documents/ico/contracts/ICO.sol": {
       "lastModificationDate": 1630327540425,
       "contentHash": "abca82b93504ddc20f067997c3e62227",
@@ -326,8 +292,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/TomatoLP.sol": {
-      "lastModificationDate": 1630426415809,
-      "contentHash": "0cff781d760ed8abcbf33679e0de3854",
+      "lastModificationDate": 1630433246416,
+      "contentHash": "e692c3c8413d2e831ba23d27ac6e1593",
       "sourceName": "contracts/TomatoLP.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -354,7 +320,8 @@
       "imports": [
         "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "./LPToken.sol"
+        "./LPToken.sol",
+        "hardhat/console.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -398,6 +365,40 @@
       ],
       "artifacts": [
         "LPToken"
+      ]
+    },
+    "/Users/costar/Documents/ico/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1629330840339,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
       ]
     }
   }

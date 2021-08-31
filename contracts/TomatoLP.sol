@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import './LPToken.sol';
+import "hardhat/console.sol";
 
 
 contract TomatoLP is Ownable {
@@ -128,10 +129,16 @@ contract TomatoLP is Ownable {
     /// @notice will burn LP tokens and return liquidity
    function withdrawLiquidity (uint amount) public lock {
         sync();
-
-        uint amount0 = (amount  / getTotalSupply()) * balanceTMTO;
-        uint amount1 = (amount  / getTotalSupply()) * balanceWETH;
-
+        uint totalSupply = getTotalSupply();
+        uint amount0 = (balanceTMTO * amount) / totalSupply ;
+        uint amount1 = (balanceWETH * amount) / totalSupply ;
+        console.log('amount: ', amount);
+        console.log('amount0: ', amount0);
+        console.log('amount1: ', amount1);
+        console.log('bal tmto: ', balanceTMTO);
+        console.log('bal weth: ', balanceWETH);
+        console.log('totalSpply of LP: ', getTotalSupply());
+        console.log(amount  / totalSupply);
         lpToken.burn(msg.sender, amount);
 
         IERC20(TMTO).transfer(msg.sender, amount0);

@@ -100,12 +100,8 @@ describe("LP", function () {
 
     await approve()
 
-    console.log('bobs tomato allowance: ', (await tomatoToken.allowance(tomatoLP.address, bob.address)).toString())
-    console.log('charlottes tomato allowance: ', (await tomatoToken.allowance(tomatoLP.address, charlotte.address)).toString())
     await tomatoLP.connect(bob).provideLiquidity(ethers.utils.parseEther(`5`), ethers.utils.parseEther(`1`))
-    console.log('bob successfully provided liquidity')
     await tomatoLP.connect(charlotte).provideLiquidity(ethers.utils.parseEther(`5`), ethers.utils.parseEther(`1`))
-    console.log('charlotte successfully provided liquidity')
 
     let bobLPBal = await lpToken.balanceOf(bob.address)
     let charLPBal = await lpToken.balanceOf(charlotte.address)
@@ -113,9 +109,51 @@ describe("LP", function () {
     expect(charLPBal.toString()).to.deep.equal('707083211746155985') 
 
   })
+  
+    it('should burn LP tokens for WETH and TMTO', async () => {
+      await ICOSellOutAndTransfer()
+      let amount0 = await tomatoToken.balanceOf(tomatoLP.address)
+      let amount1 = await WETH.balanceOf(tomatoLP.address)
+      await tomatoLP.initialize(amount0.toString(), amount1.toString())
+      let lpBal = await lpToken.balanceOf(tomatoLP.address)
+      expect(lpBal.toString()).to.deep.equal('21213203435596425732025') //end of init 
+  
+      await bob.sendTransaction({from: bob.address, to: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', value: ethers.utils.parseEther(`100`)})
+      await charlotte.sendTransaction({from: charlotte.address, to: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', value: ethers.utils.parseEther(`300`)})
+  
+      await approve()
+  
+      await tomatoLP.connect(bob).provideLiquidity(ethers.utils.parseEther(`5`), ethers.utils.parseEther(`1`))
+      await tomatoLP.connect(charlotte).provideLiquidity(ethers.utils.parseEther(`5`), ethers.utils.parseEther(`1`))
+  
+      let bobLPBal = await lpToken.balanceOf(bob.address)
+      let charLPBal = await lpToken.balanceOf(charlotte.address)
+      expect(bobLPBal.toString()).to.deep.equal('707083211746155985') 
+      expect(charLPBal.toString()).to.deep.equal('707083211746155985') 
+      // end of aquiring lp tokens
+      
+      let bobWETHBal = await WETH.balanceOf(bob.address)
+      let charWETHBal = await WETH.balanceOf(charlotte.address)
+      let bobMTOBal = await tomatoToken.balanceOf(bob.address)
+      let charTMTOBal = await tomatoToken.balanceOf(charlotte.address)
 
+      await tomatoLP.connect(bob).withdrawLiquidity(bobLPBal.toString())
+      await tomatoLP.connect(charlotte).withdrawLiquidity(charLPBal.toString())
 
-    // Burns LP tokens to return liquidity to holder
+      let bobWETHBalAfter = await WETH.balanceOf(bob.address)
+      let charWETHBalAfter = await WETH.balanceOf(charlotte.address)
+      let bobMTOBalAfter = await tomatoToken.balanceOf(bob.address)
+      let charTMTOBalAfter = await tomatoToken.balanceOf(charlotte.address)
 
+      expect(Number(bobWETHBalAfter)).to.be.greaterThan(Number(bobWETHBal))
+      expect(Number(charWETHBalAfter)).to.be.greaterThan(Number(charWETHBal))
+      expect(Number(bobMTOBalAfter)).to.be.greaterThan(Number(bobMTOBal))
+      expect(Number(charTMTOBalAfter)).to.be.greaterThan(Number(charTMTOBal))
+      
+      let bobLPBalAfter = await lpToken.balanceOf(bob.address)
+      let charLPBalAfter = await lpToken.balanceOf(charlotte.address)
+      expect(bobLPBalAfter.toString()).to.deep.equal('0') 
+      expect(charLPBalAfter.toString()).to.deep.equal('0') 
+    })
 
 })
