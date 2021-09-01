@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/costar/Documents/ico/contracts/ICO.sol": {
-      "lastModificationDate": 1630327540425,
-      "contentHash": "abca82b93504ddc20f067997c3e62227",
+      "lastModificationDate": 1630441917052,
+      "contentHash": "caef824bbcc58c65df8a48e13325c6d9",
       "sourceName": "contracts/ICO.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -75,8 +75,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/Treasury.sol": {
-      "lastModificationDate": 1629671370738,
-      "contentHash": "6a9ae5b75896eb29467b6a4363059b8a",
+      "lastModificationDate": 1630441923251,
+      "contentHash": "664b579395e9f0191b6e21820b9edc34",
       "sourceName": "contracts/Treasury.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -147,8 +147,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/TomatoToken.sol": {
-      "lastModificationDate": 1630357935974,
-      "contentHash": "54ed34a98668149104e4b8eb5e2593b7",
+      "lastModificationDate": 1630441902925,
+      "contentHash": "e1ecff37fe86dc054b5145c430f3cfe6",
       "sourceName": "contracts/TomatoToken.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -292,8 +292,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/TomatoLP.sol": {
-      "lastModificationDate": 1630439201440,
-      "contentHash": "f7d53c6172198626599251397ce1f0ad",
+      "lastModificationDate": 1630443257199,
+      "contentHash": "acb535243f8342a0d796a66e49a50e1a",
       "sourceName": "contracts/TomatoLP.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -330,8 +330,8 @@
       ]
     },
     "/Users/costar/Documents/ico/contracts/LPToken.sol": {
-      "lastModificationDate": 1630357957723,
-      "contentHash": "7f71d5e696fb458dcf5e280121283981",
+      "lastModificationDate": 1630441897460,
+      "contentHash": "eb2652e795b3f6c86ed317515853a961",
       "sourceName": "contracts/LPToken.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -364,40 +364,6 @@
       ],
       "artifacts": [
         "LPToken"
-      ]
-    },
-    "/Users/costar/Documents/ico/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1629330840339,
-      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.8.4",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
       ]
     }
   }

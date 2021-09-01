@@ -122,7 +122,7 @@ contract TomatoLP is Ownable {
         require(IERC20(TMTO).balanceOf(msg.sender) >= amount0, 'not enough TMTO');
         require(IERC20(WETH).balanceOf(msg.sender) >= amount1, 'not enough WETH');
         // make sure they deposit an even ratio
-
+        // reworking this part ^
         bool status1 = IERC20(TMTO).transferFrom(msg.sender, address(this), amount0);
         bool status2 = IERC20(WETH).transferFrom(msg.sender, address(this), amount1);
         require(status1 == true && status2 == true, 'transfer failed');
